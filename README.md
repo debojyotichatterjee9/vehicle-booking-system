@@ -1,8 +1,8 @@
 
-![Logo](https://roldrive.com/images/logo.jpg)
+<img src="./resources/images/car_logo.jpg" alt="Logo Image" height=100, width="100"/>
 
 
-# client-booking-dispatch
+# vehicle-booking-system
 
 
 
@@ -21,7 +21,7 @@
 1. Clone the project
 
 ```bash
-$ git clone https://<<username>>@bitbucket.org/roldrive1/client-booking-dispatch.git
+$ git clone https://<<username>>@bitbucket.org/debojyotichatterjee09/booking_system.git
 ```
 
 2. Go to the project directory
@@ -85,21 +85,7 @@ Raise the PR to the parent branch to get the code merged.
 
 To create a new schema or make changes in the schema
 
-Create/Update the prisma file in the respective modules directory
-
-```./src/modules/<<MODULE_NAME>>/<<MODULE_NAME>>.prisma```
-
-Run Prismix to generate the Prisma schema file
-
-```bash
-$ yarn prismix
-```
-
-Run Migrations
-
-```bash
-$ prisma migrate dev --name <<MIGRATION_NAME>>
-```
+TBD later
 
 ## Environment Variables
 
@@ -115,5 +101,5 @@ Please check the following links:
 
 [NestJS](https://docs.nestjs.com/)
 
-[Prisma](https://www.prisma.io/docs)
+[TypeORM](https://typeorm.io)
 
