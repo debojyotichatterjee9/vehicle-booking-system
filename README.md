@@ -1,5 +1,5 @@
 
-<img src="./resources/images/car_logo.jpg" alt="Logo Image" height=100, width="100"/>
+<img src="./resources/images/car_logo.jpg" alt="Logo Image" height=20, width="20"/>
 
 
 # vehicle-booking-system
