@@ -5,6 +5,7 @@ import { AppService } from "./app.service";
 import { UsersModule } from "../modules/users/users.module";
 import { VehiclesModule } from "../modules/vehicles/vehicles.module";
 import { TariffModule } from "src/modules/tariff/tariff.module";
+import { User } from "src/modules/users/users.entity";
 import { VehicleCategory, VehicleType } from "src/modules/vehicles/vehicles.entity";
 import { FixedTariff } from "src/modules/tariff/tarriff.entity";
 @Module({
@@ -14,13 +15,13 @@ import { FixedTariff } from "src/modules/tariff/tarriff.entity";
     port: 5432,
     username: "root",
     password: "password",
-    database: "roldrive_db",
+    database: "postgres",
     cache: {
       duration: 30000 // keeping cache 30 seconds
     },
     synchronize: true,
     logging: true,
-    entities: [VehicleCategory, VehicleType, FixedTariff],
+    entities: [User, VehicleCategory, VehicleType, FixedTariff],
     subscribers: [],
     migrations: [],
   }), UsersModule, VehiclesModule, TariffModule],
