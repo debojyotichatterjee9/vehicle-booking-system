@@ -22,9 +22,9 @@ export class User {
     middleName: string;
     @Column()
     lastName: string;
-    @Column()
+    @Column({ nullable: false })
     email: string;
-    @Column()
+    @Column({ nullable: false })
     username: string;
     @Column('boolean', { default: false })
     emailVerified: boolean;
