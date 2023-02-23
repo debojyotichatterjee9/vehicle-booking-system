@@ -18,9 +18,6 @@ export class UsersService {
     });
   }
 
-  findUserDetail(id: string) {
-    return this.userRepository.findOneBy({ id });
-  }
 
   findusers(name: string) {
     if (!name) {
@@ -31,5 +28,9 @@ export class UsersService {
       { middleName: ILike(`%${name}%`) },
       { lastName: ILike(`%${name}%`) }
     ]);
+  }
+
+  findUserDetail(id: string) {
+    return this.userRepository.findOneBy({ id });
   }
 }

@@ -20,15 +20,16 @@ export class VehiclesService {
     });
   }
 
-  findOneVehicleCatg(id: string) {
-    return this.vehicleCatgRepository.findOneBy({ id })
-  }
 
   findVehicleCatg(name: string) {
     if (!name) {
       return this.vehicleCatgRepository.find()
     }
     return this.vehicleCatgRepository.findBy({ categoryName: ILike(`%${name}%`) })
+  }
+
+  findOneVehicleCatg(id: string) {
+    return this.vehicleCatgRepository.findOneBy({ id })
   }
 
   async updateVehicleCatg(id: string, payload: Partial<VehicleCategory>) {
