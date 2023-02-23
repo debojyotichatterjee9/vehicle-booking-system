@@ -25,4 +25,17 @@ export class UsersController {
   updateUser(@Param("userId") userId: string, @Body() payload: createUserDto) {
     return this.userService.updateUser(userId, payload);
   }
+
+  @Patch("/:userId/delete")
+  deleteUser(@Param("userId") userId: string) {
+    const softDeletepayload = {
+      isDeleted: true
+    }
+    return this.userService.updateUser(userId, softDeletepayload);
+  }
+
+  @Delete("/:userId/delete")
+  removeVehicleCategories(@Param("userId") userId: string) {
+    return this.userService.removeUser(userId);
+  }
 }

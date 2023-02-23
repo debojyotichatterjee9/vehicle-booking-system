@@ -37,13 +37,23 @@ export class UsersService {
   async updateUser(id: string, payload: Partial<User>) {
     const userInfo = await this.userRepository.findOneBy({ id });
     if (!userInfo) {
-      throw new NotFoundException("This category does not Exist!!!")
+      throw new NotFoundException("This user does not Exist!!!")
     }
     Object.assign(userInfo, payload)
-    console.log(userInfo)
     const updatedUser = await this.userRepository.save(userInfo);
     return ({
       id: updatedUser.id
+    });
+  }
+
+  async removeUser(id: string) {
+    const userInfo = await this.userRepository.findOneBy({ id });
+    if (!userInfo) {
+      throw new NotFoundException("This user does not Exist!!!")
+    }
+    const removedUser = await this.userRepository.remove(userInfo);
+    return ({
+      deleted_status: true
     });
   }
 }
