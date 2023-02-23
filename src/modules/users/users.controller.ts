@@ -20,4 +20,9 @@ export class UsersController {
   detailVehicleCategories(@Param("userId") userId: string) {
     return this.userService.findUserDetail(userId);
   }
+
+  @Patch("/:userId/update")
+  updateUser(@Param("userId") userId: string, @Body() payload: createUserDto) {
+    return this.userService.updateUser(userId, payload);
+  }
 }

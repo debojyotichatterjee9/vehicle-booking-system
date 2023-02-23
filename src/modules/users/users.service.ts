@@ -33,4 +33,17 @@ export class UsersService {
   findUserDetail(id: string) {
     return this.userRepository.findOneBy({ id });
   }
+
+  async updateUser(id: string, payload: Partial<User>) {
+    const userInfo = await this.userRepository.findOneBy({ id });
+    if (!userInfo) {
+      throw new NotFoundException("This category does not Exist!!!")
+    }
+    Object.assign(userInfo, payload)
+    console.log(userInfo)
+    const updatedUser = await this.userRepository.save(userInfo);
+    return ({
+      id: updatedUser.id
+    });
+  }
 }
