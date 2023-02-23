@@ -9,6 +9,11 @@ export class UsersService {
     @InjectRepository(User) private userRepository: Repository<User>
   ) { }
 
+  /**
+   * CREATE USER
+   * @param payload Object
+   * @returns Object
+   */
   async createUser(payload: Partial<User>) {
     const userInstance = this.userRepository.create(payload);
 
@@ -19,6 +24,11 @@ export class UsersService {
   }
 
 
+  /**
+   * USER LIST
+   * @param name String
+   * @returns Array
+   */
   findusers(name: string) {
     if (!name) {
       return this.userRepository.find()
@@ -30,10 +40,21 @@ export class UsersService {
     ]);
   }
 
+  /**
+   * USER DETAILS
+   * @param id String
+   * @returns Object
+   */
   findUserDetail(id: string) {
     return this.userRepository.findOneBy({ id });
   }
 
+  /**
+   * USER UPDATE
+   * @param id String
+   * @param payload Object
+   * @returns Object
+   */
   async updateUser(id: string, payload: Partial<User>) {
     const userInfo = await this.userRepository.findOneBy({ id });
     if (!userInfo) {
@@ -46,6 +67,11 @@ export class UsersService {
     });
   }
 
+  /**
+   * USER DELETE
+   * @param id String
+   * @returns Object
+   */
   async removeUser(id: string) {
     const userInfo = await this.userRepository.findOneBy({ id });
     if (!userInfo) {
