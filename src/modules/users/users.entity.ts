@@ -34,9 +34,9 @@ export class User {
     isEnabled: boolean;
     @Column('boolean', { default: false })
     isDeleted: boolean;
-    @Column()
+    @Column({ nullable: true })
     saltKey: string;
-    @Column()
+    @Column({ nullable: true })
     secrethash: string;
     @Column({ nullable: true })
     createdBy: string;

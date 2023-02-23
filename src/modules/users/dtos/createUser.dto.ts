@@ -1,6 +1,6 @@
 import { IsString, IsUUID, UUIDVersion } from "class-validator";
 
-export class createUserCatgDto {
+export class createUserDto {
     @IsUUID()
     roleId: string;
     @IsString()

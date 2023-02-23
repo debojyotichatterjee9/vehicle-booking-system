@@ -10,4 +10,9 @@ export class UsersController {
   createVehicleCategories(@Body() payload: createUserDto) {
     return this.userService.createUser(payload)
   }
+
+  @Get("/list")
+  listVehicleCategories(@Query("name") name: string) {
+    return this.userService.findusers(name);
+  }
 }
