@@ -1,6 +1,7 @@
-import { Controller, Post, Get, Patch, Put, Delete, Body, Param, Query, NotFoundException } from '@nestjs/common';
+import { Controller, Post, Get, Patch, Put, Delete, Body, Param, Query, NotFoundException, UseInterceptors } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { createUserDto } from './dtos/createUser.dto';
+import { SerializeInterceptor } from 'src/interceptors/serialize.interceptor';
 @Controller('user')
 export class UsersController {
   constructor(private userService: UsersService) {
@@ -21,6 +22,7 @@ export class UsersController {
    * @param name String
    * @returns Array
    */
+  @UseInterceptors(SerializeInterceptor)
   @Get("/list")
   listVehicleCategories(@Query("name") name: string) {
     return this.userService.findusers(name);
@@ -31,6 +33,7 @@ export class UsersController {
    * @param userId Srting
    * @returns Object
    */
+  @UseInterceptors(SerializeInterceptor)
   @Get("/:userId")
   detailVehicleCategories(@Param("userId") userId: string) {
     return this.userService.findUserDetail(userId);
