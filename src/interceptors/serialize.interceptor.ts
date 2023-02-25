@@ -4,7 +4,11 @@ import { map } from "rxjs/operators";
 import { plainToClass } from "class-transformer";
 
 
-export function Serialize(responseDto: any) {
+interface ClassConstructor {
+    new (...args: any[]): {}
+}
+
+export function Serialize(responseDto: ClassConstructor) {
     return UseInterceptors(new SerializeInterceptor(responseDto));
 }
 
