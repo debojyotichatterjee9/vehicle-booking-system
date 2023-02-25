@@ -2,6 +2,7 @@ import { Controller, Post, Get, Patch, Put, Delete, Body, Param, Query, NotFound
 import { UsersService } from './users.service';
 import { createUserDto } from './dtos/createUser.dto';
 import { SerializeInterceptor } from 'src/interceptors/serialize.interceptor';
+import { ReturnUserDto } from './dtos/returnUser.dto';
 @Controller('user')
 export class UsersController {
   constructor(private userService: UsersService) {
@@ -22,7 +23,7 @@ export class UsersController {
    * @param name String
    * @returns Array
    */
-  @UseInterceptors(SerializeInterceptor)
+  @UseInterceptors(new SerializeInterceptor(ReturnUserDto))
   @Get("/list")
   listVehicleCategories(@Query("name") name: string) {
     return this.userService.findusers(name);
@@ -33,7 +34,7 @@ export class UsersController {
    * @param userId Srting
    * @returns Object
    */
-  @UseInterceptors(SerializeInterceptor)
+  @UseInterceptors(new SerializeInterceptor(ReturnUserDto))
   @Get("/:userId")
   detailVehicleCategories(@Param("userId") userId: string) {
     return this.userService.findUserDetail(userId);

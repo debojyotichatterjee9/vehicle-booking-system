@@ -5,5 +5,8 @@ export class ReturnUserDto {
     id: string;
 
     @Expose()
+    firstName: string;
+
+    @Expose()
     email: string;
 }
