@@ -18,9 +18,7 @@ export class UsersService {
     const userInstance = this.userRepository.create(payload);
 
     const userInfo = await this.userRepository.save(userInstance);
-    return ({
-      id: userInfo.id
-    });
+    return userInfo;
   }
 
 
@@ -62,9 +60,7 @@ export class UsersService {
     }
     Object.assign(userInfo, payload)
     const updatedUser = await this.userRepository.save(userInfo);
-    return ({
-      id: updatedUser.id
-    });
+    return updatedUser;
   }
 
   /**

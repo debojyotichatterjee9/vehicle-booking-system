@@ -8,5 +8,8 @@ export class ReturnUserDto {
     firstName: string;
 
     @Expose()
+    lastName: string;
+
+    @Expose()
     email: string;
 }
