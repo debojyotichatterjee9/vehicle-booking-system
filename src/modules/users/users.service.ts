@@ -27,7 +27,7 @@ export class UsersService {
    * @param name String
    * @returns Array
    */
-  findusers(name: string) {
+  findUsers(name: string) {
     if (!name) {
       return this.userRepository.find()
     }
@@ -36,6 +36,13 @@ export class UsersService {
       { middleName: ILike(`%${name}%`) },
       { lastName: ILike(`%${name}%`) }
     ]);
+  }
+
+  findUserByEmail(email: string) {
+    if (!email) {
+      console.log("ERROR")
+    }
+    return this.userRepository.findOneBy({ email: ILike(email) });
   }
 
   /**
