@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { UsersService } from './users.service';
 import { User } from "./users.entity";
 import { randomBytes, scrypt as _scrypt } from "crypto";
@@ -15,10 +15,7 @@ type signUpPayloadType = {
 };
 
 type signInPayloadType = {
-  firstName: string;
-  lastName: string;
   email: string;
-  username: string;
   password: string;
 };
 @Injectable()
@@ -27,7 +24,7 @@ export class AuthenticationService {
 
   async signUp(payload: signUpPayloadType) {
 
-    //check email
+    //check if user already exists with the email
     const userInfo = await this.usersService.findUserByEmail(payload.email);
     if (userInfo) {
       throw new BadRequestException("This email address is already in use!!!")
@@ -43,15 +40,28 @@ export class AuthenticationService {
     });
 
     const newUserInfo = await this.usersService.createUser(payload)
-
     return newUserInfo;
-    //return response
   }
 
 
 
 
-  signIn(payload: signInPayloadType) {
+  async signIn(payload: signInPayloadType) {
 
+    const userInfo = await this.usersService.findUserByEmail(payload.email);
+    if (!userInfo) {
+      throw new NotFoundException("This email address does not exist!!!");
+    }
+    const [saltKey, secretHash] = [userInfo.saltKey, userInfo.secretHash];
+
+    const generatedHashBuff = await scrypt(payload.password, saltKey, 32) as Buffer;
+    const generatedHash = generatedHashBuff.toString('hex');
+
+    if(generatedHash === secretHash) {
+      return userInfo
+    }
+    else {
+      throw new UnauthorizedException("Username or password is incorrect!!!")
+    }
   }
 }

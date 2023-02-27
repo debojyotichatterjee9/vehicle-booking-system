@@ -2,6 +2,7 @@ import { Controller, Post, Get, Patch, Put, Delete, Body, Param, Query } from '@
 import { UsersService } from './users.service';
 import { AuthenticationService } from './authentication.service';
 import { createUserDto } from './dtos/createUser.dto';
+import { signInUserDto } from './dtos/signInUser.dto';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { ReturnUserDto } from './dtos/returnUser.dto';
 @Controller('user')
@@ -22,6 +23,15 @@ signUpUser(@Body() payload: createUserDto) {
   return this.authenticationService.signUp(payload)
 }
 
+/**
+ * SIGNIN USER
+ * @param payload Object
+ * @returns Object
+ */
+@Post("/signin")
+signInUser(@Body() payload: signInUserDto) {
+  return this.authenticationService.signIn(payload)
+}
 
 /**
  * CREATE USER
