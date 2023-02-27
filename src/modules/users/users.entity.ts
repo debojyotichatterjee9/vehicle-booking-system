@@ -14,9 +14,9 @@ import {
 export class User {
     @PrimaryGeneratedColumn("uuid")
     id: string;
-    @Column()
+    @Column({ nullable: false })
     roleId: string;
-    @Column()
+    @Column({ nullable: false })
     firstName: string;
     @Column()
     middleName: string;
@@ -37,7 +37,7 @@ export class User {
     @Column({ nullable: true })
     saltKey: string;
     @Column({ nullable: true })
-    secrethash: string;
+    secretHash: string;
     @Column({ nullable: true })
     createdBy: string;
     @Column({ nullable: true })

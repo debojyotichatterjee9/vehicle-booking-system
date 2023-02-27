@@ -13,4 +13,6 @@ export class createUserDto {
     email: string
     @IsString()
     username: string
+    @IsString()
+    password: string
 }
