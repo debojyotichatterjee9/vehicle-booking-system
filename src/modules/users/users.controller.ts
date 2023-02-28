@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Patch, Put, Delete, Body, Param, Query, Session } from '@nestjs/common';
+import { Controller, Post, Get, Patch, Put, Delete, Body, Param, Query, Session, Request } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { AuthenticationService } from './authentication.service';
 import { createUserDto } from './dtos/createUser.dto';
@@ -13,31 +13,37 @@ export class UsersController {
   }
 
 
-/**
- * SIGNUP USER
- * @param payload Object
- * @returns Object
- */
-@Post("/signup")
-signUpUser(@Body() payload: createUserDto) {
-  return this.authenticationService.signUp(payload)
-}
+  /**
+   * SIGNUP USER
+   * @param payload Object
+   * @returns Object
+   */
+  @Post("/signup")
+  async signUpUser(@Body() payload: createUserDto, @Request() request: any) {
+    const userInfo = await this.authenticationService.signUp(payload);
+    console.log(request.cookie)
+    request.cookie.user_id = userInfo.id;
+    return userInfo;
+  }
 
-/**
- * SIGNIN USER
- * @param payload Object
- * @returns Object
- */
-@Post("/signin")
-signInUser(@Body() payload: signInUserDto) {
-  return this.authenticationService.signIn(payload)
-}
+  /**
+   * SIGNIN USER
+   * @param payload Object
+   * @returns Object
+   */
+  @Post("/signin")
+  async signInUser(@Body() payload: signInUserDto, @Request() request: any) {
+    const userInfo = await this.authenticationService.signIn(payload);
+    request.cookies.user_id = userInfo.id;
+    console.log(request)
+    return userInfo;
+  }
 
-/**
- * CREATE USER
- * @param payload Object
- * @returns Object
- */
+  /**
+   * CREATE USER
+   * @param payload Object
+   * @returns Object
+   */
   @Post("/create")
   createUser(@Body() payload: createUserDto) {
     return this.userService.createUser(payload)
