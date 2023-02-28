@@ -57,11 +57,9 @@ export class AuthenticationService {
     const generatedHashBuff = await scrypt(payload.password, saltKey, 32) as Buffer;
     const generatedHash = generatedHashBuff.toString('hex');
 
-    if(generatedHash === secretHash) {
-      return userInfo
-    }
-    else {
+    if (generatedHash !== secretHash) {
       throw new UnauthorizedException("Username or password is incorrect!!!")
     }
+    return userInfo
   }
 }
