@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Patch, Put, Delete, Body, Param, Query, Session } from '@nestjs/common';
+import { Controller, Post, Get, Patch, Put, Delete, Body, Param, Query, Session, Request, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { AuthenticationService } from './authentication.service';
 import { createUserDto } from './dtos/createUser.dto';
@@ -13,31 +13,50 @@ export class UsersController {
   }
 
 
-/**
- * SIGNUP USER
- * @param payload Object
- * @returns Object
- */
-@Post("/signup")
-signUpUser(@Body() payload: createUserDto) {
-  return this.authenticationService.signUp(payload)
-}
+  /**
+   * SIGNUP USER
+   * @param payload Object
+   * @returns Object
+   */
+  @Post("/signup")
+  async signUpUser(@Body() payload: createUserDto, @Session() session: any) {
+    const userInfo = await this.authenticationService.signUp(payload);
+    session.user_id = userInfo.id;
+    return userInfo;
+  }
 
-/**
- * SIGNIN USER
- * @param payload Object
- * @returns Object
- */
-@Post("/signin")
-signInUser(@Body() payload: signInUserDto) {
-  return this.authenticationService.signIn(payload)
-}
+  /**
+   * SIGNIN USER
+   * @param payload Object
+   * @returns Object
+   */
+  @Post("/signin")
+  async signInUser(@Body() payload: signInUserDto, @Session() session: any) {
+    const userInfo = await this.authenticationService.signIn(payload);
+    session.user_id = userInfo.id;
+    console.log(session)
+    return userInfo;
+  }
 
-/**
- * CREATE USER
- * @param payload Object
- * @returns Object
- */
+  /**
+   * SIGNOUT USER
+   * @param payload Object
+   * @returns Object
+   */
+  @Post("/signout")
+  async signOutUser(@Session() session: any) {
+    session.user_id = null;
+    console.log(session.user_id)
+    return {
+      status: "ok"
+    };
+  }
+
+  /**
+   * CREATE USER
+   * @param payload Object
+   * @returns Object
+   */
   @Post("/create")
   createUser(@Body() payload: createUserDto) {
     return this.userService.createUser(payload)
@@ -50,8 +69,13 @@ signInUser(@Body() payload: signInUserDto) {
    */
   // @Serialize(ReturnUserDto)
   @Get("/list")
-  listUser(@Query("name") name: string) {
-    return this.userService.findUsers(name);
+  async listUser(@Query("name") name: string, @Session() session: any) {
+    const authUser = await this.userService.findUserDetail(session.user_id)
+    console.log(authUser)
+    if(authUser) {
+      return this.userService.findUsers(name);
+    }
+    throw new UnauthorizedException("Unauthorized Request!!!")
   }
 
   /**
