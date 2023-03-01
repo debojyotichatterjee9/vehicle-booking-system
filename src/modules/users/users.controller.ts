@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Patch, Put, Delete, Body, Param, Query, Session, Request } from '@nestjs/common';
+import { Controller, Post, Get, Patch, Put, Delete, Body, Param, Query, Session, Request, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { AuthenticationService } from './authentication.service';
 import { createUserDto } from './dtos/createUser.dto';
@@ -19,10 +19,9 @@ export class UsersController {
    * @returns Object
    */
   @Post("/signup")
-  async signUpUser(@Body() payload: createUserDto, @Request() request: any) {
+  async signUpUser(@Body() payload: createUserDto, @Session() session: any) {
     const userInfo = await this.authenticationService.signUp(payload);
-    console.log(request.cookie)
-    request.cookie.user_id = userInfo.id;
+    session.user_id = userInfo.id;
     return userInfo;
   }
 
@@ -32,11 +31,25 @@ export class UsersController {
    * @returns Object
    */
   @Post("/signin")
-  async signInUser(@Body() payload: signInUserDto, @Request() request: any) {
+  async signInUser(@Body() payload: signInUserDto, @Session() session: any) {
     const userInfo = await this.authenticationService.signIn(payload);
-    request.cookies.user_id = userInfo.id;
-    console.log(request)
+    session.user_id = userInfo.id;
+    console.log(session)
     return userInfo;
+  }
+
+  /**
+   * SIGNOUT USER
+   * @param payload Object
+   * @returns Object
+   */
+  @Post("/signout")
+  async signOutUser(@Session() session: any) {
+    session.user_id = null;
+    console.log(session.user_id)
+    return {
+      status: "ok"
+    };
   }
 
   /**
@@ -56,8 +69,13 @@ export class UsersController {
    */
   // @Serialize(ReturnUserDto)
   @Get("/list")
-  listUser(@Query("name") name: string) {
-    return this.userService.findUsers(name);
+  async listUser(@Query("name") name: string, @Session() session: any) {
+    const authUser = await this.userService.findUserDetail(session.user_id)
+    console.log(authUser)
+    if(authUser) {
+      return this.userService.findUsers(name);
+    }
+    throw new UnauthorizedException("Unauthorized Request!!!")
   }
 
   /**

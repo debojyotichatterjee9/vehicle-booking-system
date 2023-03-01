@@ -20,7 +20,17 @@ async function bootstrap() {
     secret: "68e109f0f40ca72a15e05cc22786f8e6", // for cookies signature
     parseOptions: {}     // options for parsing cookies
   } as FastifyCookieOptions)
-  app.register(fastifySession, { secret: '68e109f0f40ca72a15e05cc22786f8e6' });
+  app.register(fastifySession, {
+    secret: '68e109f0f40ca72a15e05cc22786f8e6',
+    cookie: {
+      path: "/",
+      maxAge: 3600000,
+      httpOnly: false,
+      secure: "auto",
+      sameSite: true,
+      // domain: "localhost"
+    }
+  });
   // using Validation Pipe
   app.useGlobalPipes(new ValidationPipe({
     whitelist: false
