@@ -34,7 +34,6 @@ export class UsersController {
   async signInUser(@Body() payload: signInUserDto, @Session() session: any) {
     const userInfo = await this.authenticationService.signIn(payload);
     session.user_id = userInfo.id;
-    console.log(session)
     return userInfo;
   }
 
@@ -46,10 +45,9 @@ export class UsersController {
   @Post("/signout")
   async signOutUser(@Session() session: any) {
     session.user_id = null;
-    console.log(session.user_id)
-    return {
-      status: "ok"
-    };
+    return ({
+      "status": "ok"
+    });
   }
 
   /**
@@ -71,7 +69,6 @@ export class UsersController {
   @Get("/list")
   async listUser(@Query("name") name: string, @Session() session: any) {
     const authUser = await this.userService.findUserDetail(session.user_id)
-    console.log(authUser)
     if(authUser) {
       return this.userService.findUsers(name);
     }

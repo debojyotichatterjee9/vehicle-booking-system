@@ -40,7 +40,7 @@ export class UsersService {
 
   findUserByEmail(email: string) {
     if (!email) {
-      console.log("ERROR")
+      throw new BadRequestException("Invalid Email provided!!!")
     }
     return this.userRepository.findOneBy({ email: ILike(email) });
   }
