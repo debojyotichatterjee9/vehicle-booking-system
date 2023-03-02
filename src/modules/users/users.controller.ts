@@ -5,6 +5,7 @@ import { createUserDto } from './dtos/createUser.dto';
 import { signInUserDto } from './dtos/signInUser.dto';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { ReturnUserDto } from './dtos/returnUser.dto';
+import { CurrentUser } from './decorators/current-user.decorator';
 @Controller('user')
 @Serialize(ReturnUserDto)
 export class UsersController {
@@ -67,9 +68,11 @@ export class UsersController {
    */
   // @Serialize(ReturnUserDto)
   @Get("/list")
-  async listUser(@Query("name") name: string, @Session() session: any) {
+  async listUser(@CurrentUser() user: string, @Query("name") name: string, @Session() session: any) {
+    console.log('********************************************************');
+    console.log(user)    
     const authUser = await this.userService.findUserDetail(session.user_id)
-    if(authUser) {
+    if (authUser) {
       return this.userService.findUsers(name);
     }
     throw new UnauthorizedException("Unauthorized Request!!!")
