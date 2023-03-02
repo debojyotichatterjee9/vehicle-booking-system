@@ -1,4 +1,18 @@
-import { Controller, Post, Get, Patch, Put, Delete, Body, Param, Query, Session, Request, UnauthorizedException } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Get,
+  Patch,
+  Put,
+  Delete,
+  Body,
+  Param,
+  Query,
+  Session,
+  Request,
+  UnauthorizedException,
+  UseGuards
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { AuthenticationService } from './authentication.service';
 import { createUserDto } from './dtos/createUser.dto';
@@ -6,6 +20,8 @@ import { signInUserDto } from './dtos/signInUser.dto';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { ReturnUserDto } from './dtos/returnUser.dto';
 import { CurrentUser } from './decorators/current-user.decorator';
+import { User } from './users.entity';
+import { AuthGuard } from 'src/guards/auth.guard';
 @Controller('user')
 @Serialize(ReturnUserDto)
 export class UsersController {
@@ -68,9 +84,7 @@ export class UsersController {
    */
   // @Serialize(ReturnUserDto)
   @Get("/list")
-  async listUser(@CurrentUser() user: string, @Query("name") name: string, @Session() session: any) {
-    console.log('********************************************************');
-    console.log(user)    
+  async listUser(@CurrentUser() user: User, @Query("name") name: string, @Session() session: any) {
     const authUser = await this.userService.findUserDetail(session.user_id)
     if (authUser) {
       return this.userService.findUsers(name);
@@ -85,6 +99,7 @@ export class UsersController {
    */
   // @Serialize(ReturnUserDto)
   @Get("/:userId")
+  @UseGuards(AuthGuard)
   detailUser(@Param("userId") userId: string) {
     return this.userService.findUserDetail(userId);
   }
