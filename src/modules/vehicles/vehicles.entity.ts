@@ -22,10 +22,6 @@ export class VehicleCategory {
     isEnabled: boolean;
     @Column('boolean', { default: false })
     isDeleted: boolean;
-    @Column({ nullable: true })
-    createdBy: string;
-    @Column({ nullable: true })
-    modifiedBy: string;
     @CreateDateColumn()
     createdOn: string;
     @UpdateDateColumn()
@@ -33,6 +29,12 @@ export class VehicleCategory {
 
     @OneToMany(() => VehicleType, (type) => type.vehicleCategory)
     vehicleTypes: VehicleType[]
+
+    @ManyToOne(() => User, (user) => user.vehicleCategory, { eager: true })
+    createdBy: User
+
+    @ManyToOne(() => User, (user) => user.vehicleCategory, { eager: true })
+    modifiedBy: User
 
     @AfterInsert()
     logInsert() {

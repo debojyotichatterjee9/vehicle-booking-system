@@ -9,7 +9,7 @@ import {
     AfterRemove,
     OneToMany
 } from "typeorm";
-import { VehicleType } from "../vehicles/vehicles.entity";
+import { VehicleCategory, VehicleType } from "../vehicles/vehicles.entity";
 
 
 @Entity()
@@ -51,6 +51,9 @@ export class User {
 
     @OneToMany(() => VehicleType, (vehicleType => vehicleType.createdBy))
     vehicleType: VehicleType[]
+
+    @OneToMany(() => VehicleCategory, (vehicleCategory => vehicleCategory.createdBy))
+    vehicleCategory: VehicleCategory[]
 
     @AfterInsert()
     logInsert() {

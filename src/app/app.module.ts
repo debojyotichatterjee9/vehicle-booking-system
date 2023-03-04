@@ -9,6 +9,7 @@ import { TariffModule } from "src/modules/tariff/tariff.module";
 import { User } from "src/modules/users/users.entity";
 import { VehicleCategory, VehicleType } from "src/modules/vehicles/vehicles.entity";
 import { FixedTariff } from "src/modules/tariff/tarriff.entity";
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -29,7 +30,7 @@ import { FixedTariff } from "src/modules/tariff/tarriff.entity";
             duration: config.get<number>('DB_CACHE_DURATION') // keeping cache 30 seconds
           },
           synchronize: config.get<boolean>('DB_SYNC'),
-          logging: config.get<boolean>('DB_LOGGING'),
+          logging: config.get<string>('DB_LOGGING'),
           entities: [User, VehicleCategory, VehicleType, FixedTariff],
           subscribers: [],
           migrations: [],
