@@ -10,6 +10,7 @@ import {
     ManyToOne,
     OneToMany
 } from "typeorm";
+import { User } from "../users/users.entity";
 
 @Entity()
 export class VehicleCategory {
@@ -65,10 +66,6 @@ export class VehicleType {
     isEnabled: boolean;
     @Column('boolean', { default: false })
     isDeleted: boolean;
-    @Column({ nullable: true })
-    createdBy: string;
-    @Column({ nullable: true })
-    modifiedBy: string;
     @CreateDateColumn()
     createdOn: string;
     @UpdateDateColumn()
@@ -76,6 +73,12 @@ export class VehicleType {
 
     @ManyToOne(() => VehicleCategory, (category) => category.vehicleTypes, { eager: true })
     vehicleCategory: VehicleCategory
+
+    @ManyToOne(() => User, (user) => user.vehicleType, { eager: true })
+    createdBy: User
+
+    @ManyToOne(() => User, (user) => user.vehicleType, { eager: true })
+    modifiedBy: User
 
     @AfterInsert()
     logInsert() {

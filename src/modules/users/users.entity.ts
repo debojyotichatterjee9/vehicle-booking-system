@@ -7,7 +7,9 @@ import {
     AfterInsert,
     AfterUpdate,
     AfterRemove,
+    OneToMany
 } from "typeorm";
+import { VehicleType } from "../vehicles/vehicles.entity";
 
 
 @Entity()
@@ -46,6 +48,9 @@ export class User {
     createdOn: string;
     @UpdateDateColumn()
     modifiedOn: string;
+
+    @OneToMany(() => VehicleType, (vehicleType => vehicleType.createdBy))
+    vehicleType: VehicleType[]
 
     @AfterInsert()
     logInsert() {
