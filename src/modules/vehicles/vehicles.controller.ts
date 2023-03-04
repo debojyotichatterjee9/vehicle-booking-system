@@ -1,7 +1,8 @@
-import { Controller, Post, Get, Patch, Put, Delete, Body, Param, Query, NotFoundException } from '@nestjs/common';
+import { Controller, Post, Get, Patch, Put, Delete, Body, Param, Query, UseGuards } from '@nestjs/common';
 import { createVehicleCatgDto } from "./dtos/createVehicleCatg.dto";
 import { createVehicleTypeDto } from './dtos/createVehicleType.dto';
 import { VehiclesService } from './vehicles.service';
+import { AuthGuard } from 'src/guards/auth.guard';
 @Controller("vehicles")
 export class VehiclesController {
 
@@ -13,6 +14,7 @@ export class VehiclesController {
    * @param payload : Object
    */
   @Post("/category")
+  @UseGuards(AuthGuard)
   createVehicleCategories(@Body() payload: createVehicleCatgDto) {
     return this.vehicleService.createVehicleCatg(payload.categoryName)
   }
@@ -23,6 +25,7 @@ export class VehiclesController {
    * @returns : [Object]
    */
   @Get("/categories")
+  @UseGuards(AuthGuard)
   listVehicleCategories(@Query("name") name: string) {
     return this.vehicleService.findVehicleCatg(name);
   }
@@ -33,6 +36,7 @@ export class VehiclesController {
    * @returns : Object
    */
   @Get("/category/:categoryId")
+  @UseGuards(AuthGuard)
   detailVehicleCategories(@Param("categoryId") categoryId: string) {
     return this.vehicleService.findOneVehicleCatg(categoryId);
   }
@@ -44,6 +48,7 @@ export class VehiclesController {
    * @returns : Object
    */
   @Patch("/category/:categoryId")
+  @UseGuards(AuthGuard)
   updateVehicleCategories(@Param("categoryId") categoryId: string, @Body() payload: createVehicleCatgDto) {
     return this.vehicleService.updateVehicleCatg(categoryId, payload);
   }
@@ -54,6 +59,7 @@ export class VehiclesController {
    * @returns : Object
    */
   @Patch("/category/:categoryId/delete")
+  @UseGuards(AuthGuard)
   deleteVehicleCategories(@Param("categoryId") categoryId: string) {
     const softDeletepayload = {
       isDeleted: true
@@ -67,6 +73,7 @@ export class VehiclesController {
    * @returns : Object
    */
   @Delete("/category/:categoryId/delete")
+  @UseGuards(AuthGuard)
   removeVehicleCategories(@Param("categoryId") categoryId: string) {
     return this.vehicleService.removeVehicleCatg(categoryId);
   }
@@ -74,26 +81,31 @@ export class VehiclesController {
 
 
   @Post("/category/:categoryId/type")
+  @UseGuards(AuthGuard)
   createVehicleTypes(@Param("categoryId") categoryId: string, @Body() payload: createVehicleTypeDto) {
     return this.vehicleService.createVehicleType(categoryId, payload);
   }
 
   @Get("/category/:categoryId/types")
+  @UseGuards(AuthGuard)
     listVehicleTypes(@Param("categoryId") categoryId: string, @Query("name") name: string) {
     return this.vehicleService.findVehicleType(categoryId, name);
   }
 
   @Get("/category/:categoryId/type/:typeId")
+  @UseGuards(AuthGuard)
   detailVehicleTypes(@Param("categoryId") categoryId: string, @Param("typeId") typeId: string) {
     return this.vehicleService.findOneVehicleType(categoryId, typeId);
   }
 
   @Patch("/category/:categoryId/type/:typeId")
+  @UseGuards(AuthGuard)
   updateVehicleType(@Param("categoryId") categoryId: string, @Param("typeId") typeId: string, @Body() payload: createVehicleTypeDto) {
     return this.vehicleService.updateVehicleType(categoryId, typeId, payload);
   }
 
   @Patch("/category/:categoryId/type/:typeId/delete")
+  @UseGuards(AuthGuard)
   deleteVehicleType(@Param("categoryId") categoryId: string, @Param("typeId") typeId: string) {
     const softDeletepayload = {
       isDeleted: true
@@ -102,6 +114,7 @@ export class VehiclesController {
   }
 
   @Delete("/category/:categoryId/type/:typeId/delete")
+  @UseGuards(AuthGuard)
   removeVehicleType(@Param("categoryId") categoryId: string, @Param("typeId") typeId: string) {
     return this.vehicleService.removeVehicleType(categoryId, typeId);
   }
