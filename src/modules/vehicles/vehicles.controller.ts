@@ -3,6 +3,8 @@ import { createVehicleCatgDto } from "./dtos/createVehicleCatg.dto";
 import { createVehicleTypeDto } from './dtos/createVehicleType.dto';
 import { VehiclesService } from './vehicles.service';
 import { AuthGuard } from 'src/guards/auth.guard';
+import { CurrentUser } from '../users/decorators/current-user.decorator';
+import { User } from '../users/users.entity';
 @Controller("vehicles")
 export class VehiclesController {
 
@@ -15,8 +17,8 @@ export class VehiclesController {
    */
   @Post("/category")
   @UseGuards(AuthGuard)
-  createVehicleCategories(@Body() payload: createVehicleCatgDto) {
-    return this.vehicleService.createVehicleCatg(payload.categoryName)
+  createVehicleCategories(@Body() payload: createVehicleCatgDto, @CurrentUser() userInfo: User) {
+    return this.vehicleService.createVehicleCatg(payload.categoryName, userInfo)
   }
 
   /**

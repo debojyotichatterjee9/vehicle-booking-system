@@ -1,3 +1,4 @@
+import { Transform } from "class-transformer";
 import { IsString, IsUUID, UUIDVersion } from "class-validator";
 
 export class createUserDto {

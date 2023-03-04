@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Repository, ILike } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { VehicleCategory, VehicleType } from './vehicles.entity';
+import { User } from '../users/users.entity';
 
 @Injectable()
 export class VehiclesService {
@@ -11,9 +12,9 @@ export class VehiclesService {
     @InjectRepository(VehicleType) private vehicleTypeRepository: Repository<VehicleType>
   ) { }
 
-  async createVehicleCatg(categoryName: string) {
+  async createVehicleCatg(categoryName: string, userInfo: User) {
     const vehicleCatg = this.vehicleCatgRepository.create({ categoryName });
-
+    vehicleCatg.createdBy = userInfo;
     const vehicleCatgInfo = await this.vehicleCatgRepository.save(vehicleCatg);
     return ({
       id: vehicleCatgInfo.id
